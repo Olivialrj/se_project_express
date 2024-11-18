@@ -24,7 +24,7 @@ module.exports.createClothingItem = (req, res) => {
           .status(BAD_REQUEST)
           .send({ message: `Validation Error: ${err.message}` });
       }
-      res
+      return res
         .status(SERVER_ERROR)
         .send({ message: `Error creating clothing item: ${err.message}` });
     });

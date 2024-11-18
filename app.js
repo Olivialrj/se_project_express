@@ -1,8 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const mainRouter = require("./routes");
+
 const { PORT = 3001 } = process.env;
 const app = express();
-const mainRouter = require("./routes");
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/project12-db")
