@@ -20,7 +20,7 @@ module.exports.likeItem = (req, res) => {
       if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
       }
-      res
+      return res
         .status(err.statusCode || SERVER_ERROR)
         .send({ message: err.message || "An error occurred on the server" });
     });
@@ -48,7 +48,7 @@ module.exports.dislikeItem = (req, res) => {
         return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
       }
 
-      res
+      return res
         .status(err.statusCode || SERVER_ERROR)
         .send({ message: err.message || "An error occurred on the server" });
     });
