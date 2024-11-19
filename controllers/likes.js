@@ -22,7 +22,7 @@ module.exports.likeItem = (req, res) => {
       }
       return res
         .status(err.statusCode || SERVER_ERROR)
-        .send({ message: err.message || "An error occurred on the server" });
+        .send({ message: "An error has occurred on the server." });
     });
 };
 
@@ -50,6 +50,6 @@ module.exports.dislikeItem = (req, res) => {
 
       return res
         .status(err.statusCode || SERVER_ERROR)
-        .send({ message: err.message || "An error occurred on the server" });
+        .send({ message: "An error has occurred on the server." });
     });
 };

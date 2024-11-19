@@ -9,10 +9,10 @@ console.log("Setting up /users routes");
 router.use("/users", userRouter);
 
 console.log("Setting up /clothingitems routes");
-router.use("/clothingitems", clothingItemRouter);
+router.use("/items", clothingItemRouter);
 
 console.log("Setting up /likes routes");
-router.use("/likes", likeRouter);
+router.use("/items", likeRouter);
 
 // Handle non-existent routes
 router.use((req, res) => {

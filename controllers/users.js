@@ -8,9 +8,13 @@ module.exports.createUsers = (req, res) => {
     .catch((err) => {
       console.log(err);
       if (err.name === "ValidationError") {
-        return res.status(BAD_REQUEST).send({ message: err.message });
+        return res
+          .status(BAD_REQUEST)
+          .send({ message: "An error has occurred on the server." });
       }
-      return res.status(SERVER_ERROR).send({ message: err.message });
+      return res
+        .status(SERVER_ERROR)
+        .send({ message: "An error has occurred on the server." });
     });
 };
 
@@ -19,7 +23,9 @@ module.exports.getUsers = (req, res) => {
     .then((users) => res.status(200).send(users))
     .catch((err) => {
       console.error(err);
-      return res.status(SERVER_ERROR).send({ message: err.message });
+      return res
+        .status(SERVER_ERROR)
+        .send({ message: "An error has occurred on the server." });
     });
 };
 
@@ -29,10 +35,13 @@ module.exports.getUser = (req, res) => {
     .orFail()
     .then((user) => res.status(200).send(user))
     .catch((err) => {
-      console.error(err);
-      if (err.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND).send({ message: err.message });
+      if (err.name === "CastError") {
+        return res
+          .status(NOT_FOUND)
+          .send({ message: "An error has occurred on the server." });
       }
-      return res.status(SERVER_ERROR).send({ message: err.message });
+      return res
+        .status(SERVER_ERROR)
+        .send({ message: "An error has occurred on the server." });
     });
 };
