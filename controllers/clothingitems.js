@@ -7,7 +7,9 @@ module.exports.getClothingItems = (req, res) => {
     .then((clothingItems) => res.status(200).send(clothingItems))
     .catch((err) => {
       console.log(err);
-      return res.status(SERVER_ERROR).send({ message: err.messge });
+      return res
+        .status(SERVER_ERROR)
+        .send({ message: `An error has occurred on the server` });
     });
 };
 
@@ -18,7 +20,6 @@ module.exports.createClothingItem = (req, res) => {
   ClothingItem.create({ name, weather, imageUrl, owner })
     .then((clothingItem) => res.status(201).send({ data: clothingItem }))
     .catch((err) => {
-      console.error("Error creating clothing item:", err);
       if (err.name === "ValidationError") {
         return res
           .status(BAD_REQUEST)
@@ -26,7 +27,7 @@ module.exports.createClothingItem = (req, res) => {
       }
       return res
         .status(SERVER_ERROR)
-        .send({ message: `Error creating clothing item: ${err.message}` });
+        .send({ message: "An error has occurred on the server." });
     });
 };
 
@@ -37,11 +38,14 @@ module.exports.deleteClothingItems = (req, res) => {
     .orFail()
     .then((clothingItem) => res.status(200).send(clothingItem))
     .catch((err) => {
-      console.error(err);
       if (err.name === "CasError") {
         return res
           .status(NOT_FOUND)
           .send({ message: "An error has occurred on the server." });
+      } else if (err.name === "DocumentNotFoundError") {
+        return res
+          .status(BAD_REQUEST)
+          .send({ message: `Validation Error: ${err.message}` });
       }
       return res
         .status(SERVER_ERROR)
