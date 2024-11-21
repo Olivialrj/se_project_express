@@ -40,11 +40,11 @@ module.exports.deleteClothingItems = (req, res) => {
     .catch((err) => {
       if (err.name === "CasError") {
         return res
-          .status(NOT_FOUND)
+          .status(BAD_REQUEST)
           .send({ message: "An error has occurred on the server." });
       } else if (err.name === "DocumentNotFoundError") {
         return res
-          .status(BAD_REQUEST)
+          .status(NOT_FOUND)
           .send({ message: `Validation Error: ${err.message}` });
       }
       return res
