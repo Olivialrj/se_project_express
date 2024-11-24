@@ -35,14 +35,11 @@ module.exports.getUser = (req, res) => {
     .orFail()
     .then((user) => res.status(200).send(user))
     .catch((err) => {
-      if (err.name === "CasError") {
-        return res
-          .status(BAD_REQUEST)
-          .send({ message: "An error has occurred on the server." });
-      } else if (err.name === "DocumentNotFoundError") {
-        return res
-          .status(NOT_FOUND)
-          .send({ message: `Validation Error: ${err.message}` });
+      if (err.name === "CastError") {
+        return res.status(BAD_REQUEST).send({ message: "ID is invalid" });
+      }
+      if (err.name === "DocumentNotFoundError") {
+        return res.status(NOT_FOUND).send({ message: `Data was not found` });
       }
       return res
         .status(SERVER_ERROR)
