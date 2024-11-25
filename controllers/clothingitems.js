@@ -33,10 +33,25 @@ module.exports.createClothingItem = (req, res) => {
 
 module.exports.deleteClothingItems = (req, res) => {
   const { itemId } = req.params;
+  const userId = req.user._id;
 
-  ClothingItem.findByIdAndDelete(itemId)
+  ClothingItem.findById(itemId)
     .orFail()
-    .then((clothingItem) => res.status(200).send(clothingItem))
+    .then((clothingItem) => {
+      if (clothingItem.owner.toString() !== userId) {
+        // If the logged-in user is not the owner, deny the deletion
+        return res
+          .status(FORBIDDEN)
+          .send({ message: "You are not authorized to delete this item" });
+      }
+
+      // If the user is the owner, delete the item
+      return clothingItem
+        .deleteOne()
+        .then(() =>
+          res.status(200).send({ message: "Item deleted successfully" })
+        );
+    })
     .catch((err) => {
       if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: "ID is invalid" });
