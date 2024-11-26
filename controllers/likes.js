@@ -20,8 +20,11 @@ module.exports.likeItem = (req, res) => {
       if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
       }
+      if (err.statusCode === NOT_FOUND) {
+        return res.status(err.statusCode).send({ message: err.message });
+      }
       return res
-        .status(err.statusCode || SERVER_ERROR)
+        .status(SERVER_ERROR)
         .send({ message: "An error has occurred on the server." });
     });
 };
@@ -47,9 +50,11 @@ module.exports.dislikeItem = (req, res) => {
       if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
       }
-
+      if (err.statusCode === NOT_FOUND) {
+        return res.status(err.statusCode).send({ message: err.message });
+      }
       return res
-        .status(err.statusCode || SERVER_ERROR)
+        .status(SERVER_ERROR)
         .send({ message: "An error has occurred on the server." });
     });
 };
