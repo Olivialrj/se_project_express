@@ -24,17 +24,18 @@ module.exports.createUsers = (req, res) => {
         .hash(password, 10)
         .then((hashedPassword) =>
           User.create({ name, avatar, email, password: hashedPassword })
-        );
+        )
+        .then((user) => {
+          const userResponse = {
+            name: user.name,
+            avatar: user.avatar,
+            email: user.email,
+            _id: user._id,
+          };
+          return res.status(201).send({ data: userResponse });
+        });
     })
-    .then((user) => {
-      const userResponse = {
-        name: user.name,
-        avatar: user.avatar,
-        email: user.email,
-        _id: user._id,
-      };
-      return res.status(201).send({ data: userResponse });
-    })
+
     .catch((err) => {
       if (err.code === 11000) {
         return res.status(CONFLICT).send({ message: "User already exists" });
@@ -105,8 +106,7 @@ module.exports.login = (req, res) => {
       .send({ message: "Email and password are required" });
   }
 
-  return User.findUserByCredentials(email, password) // Add a return here to ensure consistency
-    .select("+password")
+  return User.findUserByCredentials(email, password)
     .then((user) => {
       // Generate a JWT token
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
