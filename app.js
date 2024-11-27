@@ -1,8 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const mainRouter = require("./routes");
-const auth = require("./middlewares/auth");
 const cors = require("cors");
+const mainRouter = require("./routes");
+const { login, createUser } = require("./controllers/users");
 
 const { PORT = 3001 } = process.env;
 const app = express();
@@ -15,19 +15,12 @@ mongoose
   .catch(console.error);
 
 app.use(express.json());
-
-// app.use((req, res, next) => {
-//   req.user = {
-//     _id: "6737cc792721da01871716ab", // paste the _id of the test user created in the previous step
-//   };
-//   next();
-// });
+app.use(cors());
 
 app.use("/", mainRouter);
 app.post("/signin", login);
-app.post("/signup", creatUser);
-app.use(auth);
-app.use(sors());
+app.post("/signup", createUser);
+
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });

@@ -20,6 +20,9 @@ module.exports.likeItem = (req, res) => {
       if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
       }
+      if (err.name === "DocumentNotFoundError") {
+        return res.status(NOT_FOUND).send({ message: "Item not found" });
+      }
       return res
         .status(err.statusCode || SERVER_ERROR)
         .send({ message: "An error has occurred on the server." });
@@ -47,7 +50,9 @@ module.exports.dislikeItem = (req, res) => {
       if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
       }
-
+      if (err.name === "DocumentNotFoundError") {
+        return res.status(NOT_FOUND).send({ message: "Item not found" });
+      }
       return res
         .status(err.statusCode || SERVER_ERROR)
         .send({ message: "An error has occurred on the server." });

@@ -1,5 +1,10 @@
 const ClothingItem = require("../models/clothingitem");
-const { BAD_REQUEST, NOT_FOUND, SERVER_ERROR } = require("../utils/errors");
+const {
+  BAD_REQUEST,
+  NOT_FOUND,
+  SERVER_ERROR,
+  FORBIDDEN,
+} = require("../utils/errors");
 
 module.exports.getClothingItems = (req, res) => {
   ClothingItem.find({})

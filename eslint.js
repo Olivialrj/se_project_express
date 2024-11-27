@@ -21,14 +21,5 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
-  rules: {
-    "no-underscore-dangle": ["error", { allow: ["_id"] }],
-  },
-  settings: {
-    "import/resolver": {
-      node: {
-        extensions: [".js", ".json", ".node"],
-      },
-    },
-  },
+  rules: {},
 };

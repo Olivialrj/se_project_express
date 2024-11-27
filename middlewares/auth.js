@@ -1,8 +1,6 @@
+const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../utils/config");
 const { UNAUTHORISED } = require("../utils/errors");
-
-req.user = payload;
-next();
 
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
@@ -19,6 +17,7 @@ module.exports = (req, res, next) => {
   } catch (err) {
     return res.status(UNAUTHORISED).send({ message: "Authorization required" });
   }
-  req.user = payload;
-  next();
+
+  req.user = payload; // Add user data to the request
+  return next(); // Proceed to the next middleware or route handler
 };
