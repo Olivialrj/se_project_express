@@ -73,7 +73,11 @@ module.exports.getCurrentUser = (req, res) => {
 module.exports.updateCurrentUser = (req, res) => {
   const userId = req.user._id;
   const { name, avatar } = req.body;
-  User.findByIdAndUpdate(userId, { name, avatar })
+  User.findByIdAndUpdate(
+    userId,
+    { name, avatar },
+    { new: true, runValidators: true }
+  )
     .then((user) => {
       if (!user) {
         return res.status(NOT_FOUND).send({ message: "User not found" });
@@ -111,12 +115,17 @@ module.exports.login = (req, res) => {
         const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
           expiresIn: "7d",
         });
-        return res.send({ token }); // Direct return
+        return res.send({ token });
       })
     )
-    .catch(() =>
-      res
-        .status(UNAUTHORISED)
-        .send({ message: "An error has occurred on the server." })
-    ); // Direct return in catch
+    .catch((err) => {
+      if (err.name === "Incorrect email or password") {
+        return res
+          .status(UNAUTHORISED)
+          .send({ message: "Invalid email or password" });
+      }
+      return res
+        .status(SERVER_ERROR)
+        .send({ message: "An error has occurred on the server." });
+    });
 };
