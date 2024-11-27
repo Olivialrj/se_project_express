@@ -6,8 +6,8 @@ const {
   BAD_REQUEST,
   NOT_FOUND,
   SERVER_ERROR,
-  UNAUTHORISED,
   CONFLICT,
+  UNAUTHORISED,
 } = require("../utils/errors");
 
 module.exports.createUsers = (req, res) => {
@@ -81,19 +81,25 @@ module.exports.updateCurrentUser = (req, res) => {
       return res.send(user);
     })
     .catch((err) => {
-      if (err.name === "ValidationError") {
-        return res.status(BAD_REQUEST).send({ message: "Invalid data" });
-      }
-      return res.status(SERVER_ERROR).send({ message: "An error occurred" });
+      console.error("Error updating user:", err);
+      return res
+        .status(SERVER_ERROR)
+        .send({ message: "Internal server error" });
     });
 };
 
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
 
-  User.findUserbyCredentials(email, password)
+  if (!email || !password) {
+    return res
+      .status(BAD_REQUEST)
+      .send({ message: "Email and password are required" });
+  }
+
+  return User.findUserbyCredentials(email, password) // Add a return here to ensure consistency
     .select("+password")
-    .then((user) => {
+    .then((user) =>
       bcrypt.compare(password, user.password).then((matched) => {
         if (!matched) {
           return res
@@ -105,17 +111,12 @@ module.exports.login = (req, res) => {
         const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
           expiresIn: "7d",
         });
-        return res.send({ token }); // Send the token to the client
-      });
-    })
-    .catch(() => {
-      if (!email || !password) {
-        return res
-          .status(BAD_REQUEST)
-          .send({ message: "Email and password are required" });
-      }
-      return res
+        return res.send({ token }); // Direct return
+      })
+    )
+    .catch(() =>
+      res
         .status(UNAUTHORISED)
-        .send({ message: "Incorrect email or password" });
-    });
+        .send({ message: "An error has occurred on the server." })
+    ); // Direct return in catch
 };

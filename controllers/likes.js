@@ -14,17 +14,14 @@ module.exports.likeItem = (req, res) => {
       error.statusCode = NOT_FOUND;
       throw error;
     })
-    .then((updatedItem) => res.status(200).send({ data: updatedItem }))
+    .then((updatedItem) => res.send({ data: updatedItem }))
     .catch((err) => {
       console.error("Error liking item:", err);
       if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
       }
-      if (err.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND).send({ message: "Item not found" });
-      }
       return res
-        .status(err.statusCode || SERVER_ERROR)
+        .status(SERVER_ERROR)
         .send({ message: "An error has occurred on the server." });
     });
 };
@@ -50,11 +47,9 @@ module.exports.dislikeItem = (req, res) => {
       if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
       }
-      if (err.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND).send({ message: "Item not found" });
-      }
+
       return res
-        .status(err.statusCode || SERVER_ERROR)
+        .status(SERVER_ERROR)
         .send({ message: "An error has occurred on the server." });
     });
 };
