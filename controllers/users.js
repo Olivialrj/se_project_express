@@ -20,10 +20,11 @@ module.exports.createUsers = (req, res) => {
           .status(CONFLICT)
           .send({ message: "User with this email already exists." });
       }
-      return bcrypt.hash(password, 10);
-    })
-    .then((hashedPassword) => {
-      User.create({ name, avatar, email, password: hashedPassword });
+      return bcrypt
+        .hash(password, 10)
+        .then((hashedPassword) =>
+          User.create({ name, avatar, email, password: hashedPassword })
+        );
     })
     .then((user) => {
       const userResponse = {
@@ -35,7 +36,6 @@ module.exports.createUsers = (req, res) => {
       return res.status(201).send({ data: userResponse });
     })
     .catch((err) => {
-      console.log(err);
       if (err.code === 11000) {
         return res.status(CONFLICT).send({ message: "User already exists" });
       }
@@ -85,7 +85,11 @@ module.exports.updateCurrentUser = (req, res) => {
       return res.send(user);
     })
     .catch((err) => {
-      console.error("Error updating user:", err);
+      if (err.name === "ValidationError") {
+        return res
+          .status(BAD_REQUEST)
+          .send({ message: "Internal server error" });
+      }
       return res
         .status(SERVER_ERROR)
         .send({ message: "Internal server error" });
@@ -101,25 +105,17 @@ module.exports.login = (req, res) => {
       .send({ message: "Email and password are required" });
   }
 
-  return User.findUserbyCredentials(email, password) // Add a return here to ensure consistency
+  return User.findUserByCredentials(email, password) // Add a return here to ensure consistency
     .select("+password")
-    .then((user) =>
-      bcrypt.compare(password, user.password).then((matched) => {
-        if (!matched) {
-          return res
-            .status(UNAUTHORISED)
-            .send({ message: "Incorrect email or password" });
-        }
-
-        // Generate a JWT token
-        const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
-          expiresIn: "7d",
-        });
-        return res.send({ token });
-      })
-    )
+    .then((user) => {
+      // Generate a JWT token
+      const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
+        expiresIn: "7d",
+      });
+      return res.send({ token });
+    })
     .catch((err) => {
-      if (err.name === "Incorrect email or password") {
+      if (err.message === "Incorrect email or password") {
         return res
           .status(UNAUTHORISED)
           .send({ message: "Invalid email or password" });

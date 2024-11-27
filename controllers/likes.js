@@ -16,7 +16,9 @@ module.exports.likeItem = (req, res) => {
     })
     .then((updatedItem) => res.send({ data: updatedItem }))
     .catch((err) => {
-      console.error("Error liking item:", err);
+      if (err.statusCode === NOT_FOUND) {
+        return res.status(NOT_FOUND).send({ message: err.message });
+      }
       if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
       }
@@ -42,8 +44,9 @@ module.exports.dislikeItem = (req, res) => {
     })
     .then((updatedItem) => res.status(200).send({ data: updatedItem }))
     .catch((err) => {
-      console.error("Error disliking item:", err);
-
+      if (err.statusCode === NOT_FOUND) {
+        return res.status(NOT_FOUND).send({ message: err.message });
+      }
       if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
       }
