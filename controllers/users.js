@@ -11,7 +11,8 @@ const {
 } = require("../utils/errors");
 
 module.exports.createUsers = (req, res) => {
-  const { name, avatar, email, password } = req.body;
+  console.log("Received data:", req.body);
+  const { email, password, name, avatarUrl } = req.body;
 
   User.findOne({ email })
     .then((existingUser) => {
@@ -23,12 +24,12 @@ module.exports.createUsers = (req, res) => {
       return bcrypt
         .hash(password, 10)
         .then((hashedPassword) =>
-          User.create({ name, avatar, email, password: hashedPassword })
+          User.create({ email, password: hashedPassword, name, avatarUrl })
         )
         .then((user) => {
           const userResponse = {
             name: user.name,
-            avatar: user.avatar,
+            avatarUrl: user.avatar,
             email: user.email,
             _id: user._id,
           };
@@ -56,7 +57,7 @@ module.exports.getCurrentUser = (req, res) => {
   User.findById(userId)
     .orFail()
     .then((user) => {
-      res.send({ data: user });
+      res.send(user);
     })
     .catch((err) => {
       if (err.name === "CastError") {
@@ -112,7 +113,14 @@ module.exports.login = (req, res) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",
       });
-      return res.send({ token });
+      return res.send({
+        token,
+        user: {
+          name: user.name,
+          email: user.email,
+          avatar: user.avatar,
+        },
+      });
     })
     .catch((err) => {
       if (err.message === "Incorrect email or password") {
