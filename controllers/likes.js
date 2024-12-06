@@ -4,6 +4,8 @@ const ClothingItem = require("../models/clothingitem");
 module.exports.likeItem = (req, res) => {
   const userId = req.user._id;
   const { itemId } = req.params;
+  console.log("User ID:", userId); // Add this
+  console.log("Item ID:", itemId);
   ClothingItem.findByIdAndUpdate(
     itemId,
     { $addToSet: { likes: userId } }, // add _id to the array if it's not there yet
