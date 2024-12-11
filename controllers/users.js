@@ -118,7 +118,8 @@ module.exports.login = (req, res) => {
         user: {
           name: user.name,
           email: user.email,
-          avatar: user.avatar,
+          avatarUrl: user.avatarUrl,
+          _id: user._id,
         },
       });
     })
