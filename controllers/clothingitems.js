@@ -4,7 +4,7 @@ const {
   NOT_FOUND,
   SERVER_ERROR,
   FORBIDDEN,
-} = require("../utils/errors");
+} = require("../utils/errorhandler");
 
 module.exports.getClothingItems = (req, res) => {
   ClothingItem.find({})

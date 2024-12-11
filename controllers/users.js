@@ -8,7 +8,7 @@ const {
   SERVER_ERROR,
   CONFLICT,
   UNAUTHORISED,
-} = require("../utils/errors");
+} = require("../utils/errorhandler");
 
 module.exports.createUsers = (req, res) => {
   console.log("Received data:", req.body);
