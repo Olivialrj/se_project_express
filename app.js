@@ -2,9 +2,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const { errors } = require("celebrate");
-const mainRouter = require("./routes");
+const mainRouter = require("./routes/index");
 const { login, createUsers } = require("./controllers/users");
-const errorhandler = require("./utils/errorhandler");
+const errorHandler = require("./middlewares/errorhandler");
+const { requestLogger, errorLogger } = require("./middlewares/logger");
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -19,11 +20,26 @@ mongoose
 app.use(express.json());
 app.use(cors());
 
+app.use(requestLogger);
+
 app.post("/signin", login);
 app.post("/signup", createUsers);
 app.use("/", mainRouter);
-// app.use(errors());
-// app.use(errorhandler);
+
+app.use(errorLogger);
+// //celebrate error handler
+app.use(errors());
+// //centralized handler
+app.use(errorHandler);
+
+app.use((err, req, res, next) => {
+  const { statusCode = 500, message } = err;
+  res.status(statusCode).send({
+    message:
+      statusCode === 500 ? "An error has occurred on the server." : message,
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });
