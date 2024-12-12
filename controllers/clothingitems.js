@@ -2,7 +2,7 @@ const ClothingItem = require("../models/clothingitem");
 const BadRequestError = require("../middlewares/errors/bad-request-error");
 const NotFoundError = require("../middlewares/errors/not-found-error");
 const ForbiddenError = require("../middlewares/errors/forbidden-error");
-module.exports.getClothingItems = (req, res) => {
+module.exports.getClothingItems = (req, res, next) => {
   ClothingItem.find({})
     .then((clothingItems) => res.status(200).send(clothingItems))
     .catch((err) => {
@@ -10,7 +10,7 @@ module.exports.getClothingItems = (req, res) => {
     });
 };
 
-module.exports.createClothingItem = (req, res) => {
+module.exports.createClothingItem = (req, res, next) => {
   const { name, weather, imageUrl } = req.body;
   const owner = req.user._id;
 
@@ -30,7 +30,7 @@ module.exports.createClothingItem = (req, res) => {
     });
 };
 
-module.exports.deleteClothingItems = (req, res) => {
+module.exports.deleteClothingItems = (req, res, next) => {
   const { itemId } = req.params;
   const userId = req.user._id;
 

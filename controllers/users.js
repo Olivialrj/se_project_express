@@ -53,7 +53,7 @@ module.exports.createUsers = (req, res, next) => {
     });
 };
 
-module.exports.getCurrentUser = (req, res) => {
+module.exports.getCurrentUser = (req, res, next) => {
   const userId = req.user._id;
   User.findById(userId)
     .orFail()
@@ -76,7 +76,7 @@ module.exports.getCurrentUser = (req, res) => {
     });
 };
 
-module.exports.updateCurrentUser = (req, res) => {
+module.exports.updateCurrentUser = (req, res, next) => {
   const userId = req.user._id;
   const { name, avatarUrl } = req.body;
   User.findByIdAndUpdate(
@@ -102,7 +102,7 @@ module.exports.updateCurrentUser = (req, res) => {
     });
 };
 
-module.exports.login = (req, res) => {
+module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {

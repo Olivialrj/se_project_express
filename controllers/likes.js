@@ -2,7 +2,7 @@ const BadRequestError = require("../middlewares/errors/bad-request-error");
 const NotFoundError = require("../middlewares/errors/not-found-error");
 const ClothingItem = require("../models/clothingitem");
 
-module.exports.likeItem = (req, res) => {
+module.exports.likeItem = (req, res, next) => {
   const userId = req.user._id;
   const { itemId } = req.params;
   console.log("User ID:", userId); // Add this
@@ -34,7 +34,7 @@ module.exports.likeItem = (req, res) => {
     });
 };
 
-module.exports.dislikeItem = (req, res) => {
+module.exports.dislikeItem = (req, res, next) => {
   const userId = req.user._id;
   const { itemId } = req.params;
 
