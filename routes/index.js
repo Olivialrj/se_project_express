@@ -12,7 +12,7 @@ console.log("Setting up /clothingitems routes");
 router.use("/items", clothingItemRouter);
 
 console.log("Setting up /likes routes");
-router.use("/items", likeRouter);
+router.use("/likes", likeRouter);
 
 // Handle non-existent routes
 router.use((req, res) => {

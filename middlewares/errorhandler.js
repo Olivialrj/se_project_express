@@ -5,8 +5,6 @@ const NotFoundError = require("./errors/not-found-error");
 const ConflictError = require("./errors/conflict-error");
 
 const errorHandler = (err, req, res, next) => {
-  console.error(err);
-  // Handle the custom error types
   if (err instanceof BadRequestError) {
     return res.status(err.statusCode).send({ message: err.message });
   }

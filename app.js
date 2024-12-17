@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -16,6 +17,16 @@ mongoose
     console.log("Connected to DB");
   })
   .catch(console.error);
+
+app.get("/", (req, res) => {
+  res.send("Hello, world!");
+});
+
+app.get("/crash-test", () => {
+  setTimeout(() => {
+    throw new Error("Server will crash now");
+  }, 0);
+});
 
 app.use(express.json());
 app.use(cors());

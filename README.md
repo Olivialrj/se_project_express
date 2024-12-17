@@ -1,5 +1,9 @@
 # Project Name: WTWR (What to Wear?) : Back End
 
+# Frontend Project Link: https://github.com/Olivialrj/se_project_react
+
+# Domain Name: http://project15-wtwr.jumpingcrab.com
+
 # Project Description:
 
 - This project is a backend API for managing a clothing item collection. The API is built using Node.js, Express.js, and MongoDB, providing functionality to handle users, clothing items, and interactions like likes and dislikes. it is a foundational project for understanding backend development, handling RESTful requests, and implementing error handling and authentication.

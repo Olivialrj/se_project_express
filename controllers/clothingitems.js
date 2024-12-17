@@ -2,6 +2,7 @@ const ClothingItem = require("../models/clothingitem");
 const BadRequestError = require("../middlewares/errors/bad-request-error");
 const NotFoundError = require("../middlewares/errors/not-found-error");
 const ForbiddenError = require("../middlewares/errors/forbidden-error");
+
 module.exports.getClothingItems = (req, res, next) => {
   ClothingItem.find({})
     .then((clothingItems) => res.status(200).send(clothingItems))
