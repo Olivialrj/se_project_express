@@ -43,14 +43,6 @@ app.use(errors());
 // //centralized handler
 app.use(errorHandler);
 
-app.use((err, req, res, next) => {
-  const { statusCode = 500, message } = err;
-  res.status(statusCode).send({
-    message:
-      statusCode === 500 ? "An error has occurred on the server." : message,
-  });
-});
-
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });
