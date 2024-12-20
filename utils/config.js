@@ -8,3 +8,4 @@ const randomString = crypto
   .toString("hex"); // converting it into a string
 
 console.log(randomString); // 5cdd183194489560b0e6bfaf8a81541e
+//d741ec8430e608a9613b5fa9ca3775dabe29adc508119f4719de0d57665c264e

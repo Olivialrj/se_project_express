@@ -2,7 +2,7 @@
 
 # Frontend Project Link: https://github.com/Olivialrj/se_project_react
 
-# Domain Name: http://project15-wtwr.jumpingcrab.com
+# Domain Name: http://olivialrj.strangled.net
 
 # Project Description:
 

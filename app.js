@@ -7,6 +7,10 @@ const mainRouter = require("./routes/index");
 const { login, createUsers } = require("./controllers/users");
 const errorHandler = require("./middlewares/errorhandler");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
+const {
+  validateUser,
+  validateUserInfoBody,
+} = require("./middlewares/validation");
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -33,8 +37,8 @@ app.use(cors());
 
 app.use(requestLogger);
 
-app.post("/signin", login);
-app.post("/signup", createUsers);
+app.post("/signin", validateUser, login);
+app.post("/signup", validateUserInfoBody, createUsers);
 app.use("/", mainRouter);
 
 app.use(errorLogger);
