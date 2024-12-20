@@ -26,7 +26,7 @@ module.exports.createUsers = (req, res, next) => {
         .then((user) => {
           const userResponse = {
             name: user.name,
-            avatarUrl: user.avatar,
+            avatarUrl: user.avatarUrl,
             email: user.email,
             _id: user._id,
           };
@@ -122,7 +122,8 @@ module.exports.login = (req, res, next) => {
         user: {
           name: user.name,
           email: user.email,
-          avatar: user.avatar,
+          avatarUrl: user.avatarUrl,
+          _id: user._id,
         },
       });
     })
