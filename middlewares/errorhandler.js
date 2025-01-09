@@ -1,4 +1,3 @@
-
 // const BadRequestError = require("./errors/bad-request-error");
 // const UnauthorisedError = require("./errors/unauthorised-error");
 // const ForbiddenError = require("./errors/forbidden-error");
@@ -40,3 +39,5 @@ const errorHandler = (err, req, res, next) => {
     message: statusCode === 500 ? "An error occurred on the server" : message,
   });
 };
+
+module.exports = errorHandler;

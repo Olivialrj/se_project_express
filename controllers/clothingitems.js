@@ -27,7 +27,7 @@ module.exports.createClothingItem = (req, res, next) => {
       // return res
       //   .status(SERVER_ERROR)
       //   .send({ message: "An error has occurred on the server." });
-      next(err);
+      return next(err);
     });
 };
 
@@ -62,6 +62,6 @@ module.exports.deleteClothingItems = (req, res, next) => {
         // return res.status(NOT_FOUND).send({ message: `Data was not found` });
         return next(new NotFoundError("Data was not found"));
       }
-      next(err);
+      return next(err);
     });
 };

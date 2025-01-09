@@ -22,10 +22,6 @@ mongoose
   })
   .catch(console.error);
 
-app.get("/", (req, res) => {
-  res.send("Hello, world!");
-});
-
 app.get("/crash-test", () => {
   setTimeout(() => {
     throw new Error("Server will crash now");

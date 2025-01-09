@@ -8,7 +8,7 @@ const UnauthorisedError = require("../middlewares/errors/unauthorised-error");
 const NotFoundError = require("../middlewares/errors/not-found-error");
 
 module.exports.createUsers = (req, res, next) => {
-  const { email, password, name, avatarUrl } = req.body;
+  const { email, password, name, avatar } = req.body;
 
   User.findOne({ email })
     .then((existingUser) => {
@@ -21,12 +21,12 @@ module.exports.createUsers = (req, res, next) => {
       return bcrypt
         .hash(password, 10)
         .then((hashedPassword) =>
-          User.create({ email, password: hashedPassword, name, avatarUrl })
+          User.create({ email, password: hashedPassword, name, avatar })
         )
         .then((user) => {
           const userResponse = {
             name: user.name,
-            avatarUrl: user.avatarUrl,
+            avatar: user.avatar,
             email: user.email,
             _id: user._id,
           };
@@ -48,7 +48,7 @@ module.exports.createUsers = (req, res, next) => {
       // return res
       //   .status(SERVER_ERROR)
       //   .send({ message: "An error has occurred on the server." });
-      next(err);
+      return next(err);
     });
 };
 
@@ -77,10 +77,10 @@ module.exports.getCurrentUser = (req, res, next) => {
 
 module.exports.updateCurrentUser = (req, res, next) => {
   const userId = req.user._id;
-  const { name, avatarUrl } = req.body;
+  const { name, avatar } = req.body;
   User.findByIdAndUpdate(
     userId,
-    { name, avatarUrl },
+    { name, avatar },
     { new: true, runValidators: true }
   )
     .then((user) => {
@@ -122,7 +122,7 @@ module.exports.login = (req, res, next) => {
         user: {
           name: user.name,
           email: user.email,
-          avatarUrl: user.avatarUrl,
+          avatar: user.avatar,
           _id: user._id,
         },
       });

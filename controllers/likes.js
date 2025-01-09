@@ -30,7 +30,7 @@ module.exports.likeItem = (req, res, next) => {
       // return res
       //   .status(SERVER_ERROR)
       //   .send({ message: "An error has occurred on the server." });
-      next(err);
+      return next(err);
     });
 };
 
@@ -58,6 +58,6 @@ module.exports.dislikeItem = (req, res, next) => {
         // return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
         return next(new BadRequestError("Invalid item ID"));
       }
-      next(err);
+      return next(err);
     });
 };
