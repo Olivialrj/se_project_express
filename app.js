@@ -15,10 +15,6 @@ const {
 const { PORT = 3000 } = process.env;
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("Welcome to the homepage!");
-});
-
 mongoose
   .connect("mongodb://127.0.0.1:27017/project12-db")
   .then(() => {
