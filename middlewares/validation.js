@@ -61,9 +61,11 @@ module.exports.validateUser = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email().messages({
       "string.email": 'The "email" field must be filled in',
+      "any.required": 'The "email" field is required',
     }),
-    password: Joi.string().required().min(8).messages({
-      "string.min": 'The minmum length of the "password" field is 8',
+    password: Joi.string().required().min(1).messages({
+      "string.min": 'The minmum length of the "password" field is 1',
+      "any.required": 'The "password" field is required',
     }),
   }),
 });
