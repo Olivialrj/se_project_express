@@ -14,10 +14,4 @@ router.use("/items", clothingItemRouter);
 console.log("Setting up /likes routes");
 router.use("/items", likeRouter);
 
-// Handle non-existent routes
-// router.use((req, res) => {
-//   console.log(`404 Error - Path: ${req.path}`);
-//   return next(new NotFoundError("Router not found"));
-// });
-
 module.exports = router;
