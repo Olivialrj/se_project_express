@@ -13,7 +13,7 @@ router.use("/items", clothingItemRouter);
 console.log("Setting up /likes routes");
 router.use("/items", likeRouter);
 
-router.use((req, res) => {
+router.use((req, res, next) => {
   console.log(`404 Error - Path: ${req.path}`);
   return next(new NotFoundError("Router not found"));
 });
