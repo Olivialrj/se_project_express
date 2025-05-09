@@ -12,11 +12,12 @@ const {
   validateUserInfoBody,
 } = require("./middlewares/validation");
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3000, MONGODB_URI = "mongodb://127.0.0.1:27017/project12-db" } =
+  process.env;
 const app = express();
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/project12-db")
+  .connect(MONGODB_URI)
   .then(() => {
     console.log("Connected to DB");
   })
