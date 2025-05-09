@@ -30,8 +30,15 @@ app.get("/crash-test", () => {
 });
 
 app.use(express.json());
-app.use(cors());
-
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://se-project-react-gold.vercel.app/",
+    ],
+    credentials: true, // optional: if you're using cookies/auth
+  })
+);
 app.use(requestLogger);
 
 app.post("/signin", validateUser, login);
