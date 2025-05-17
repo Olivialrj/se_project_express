@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const multer = require("multer");
 const cors = require("cors");
 const { errors } = require("celebrate");
 const mainRouter = require("./routes/index");
@@ -15,6 +16,7 @@ const {
 const { PORT = 3000, MONGODB_URI = "mongodb://127.0.0.1:27017/project12-db" } =
   process.env;
 const app = express();
+const upload = multer();
 
 mongoose
   .connect(MONGODB_URI)
@@ -42,7 +44,7 @@ app.use(
 app.use(requestLogger);
 
 app.post("/signin", validateUser, login);
-app.post("/signup", validateUserInfoBody, createUsers);
+app.post("/signup", validateUserInfoBody, upload.single("avatar"), createUsers);
 app.use("/", mainRouter);
 
 app.use(errorLogger);

@@ -8,7 +8,10 @@ const UnauthorisedError = require("../middlewares/errors/unauthorised-error");
 const NotFoundError = require("../middlewares/errors/not-found-error");
 
 module.exports.createUsers = (req, res, next) => {
-  const { email, password, name, avatar } = req.body;
+  const { email, password, name } = req.body;
+  const avatarFile = req.file;
+
+  const avatar = avatarFile ? avatarFile.buffer.toString("base64") : null;
 
   User.findOne({ email })
     .then((existingUser) => {
