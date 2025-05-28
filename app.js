@@ -13,11 +13,12 @@ const {
   validateUserInfoBody,
 } = require("./middlewares/validation");
 
-const { PORT = 3000, MONGODB_URI = "mongodb://127.0.0.1:27017/project12-db" } =
-  process.env;
+// const { PORT = 3000, MONGODB_URI = "mongodb://127.0.0.1:27017/project12-db" } =
+//   process.env;
+
+const { MONGODB_URI = "mongodb://127.0.0.1:27017/wtwr" } = process.env;
 const app = express();
 const upload = multer();
-
 mongoose
   .connect(MONGODB_URI)
   .then(() => {
@@ -35,8 +36,8 @@ app.use(express.json());
 app.use(
   cors({
     origin: [
-      "http://localhost:5173",
-      "https://se-project-react-gold.vercel.app/",
+      "http://localhost:3001",
+      "https://se-project-react-gold.vercel.app",
     ],
     credentials: true, // optional: if you're using cookies/auth
   })
@@ -53,6 +54,6 @@ app.use(errors());
 // //centralized handler
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
-});
+// app.listen(PORT, () => {
+//   console.log(`Server is listening on port ${PORT}`);
+// });
